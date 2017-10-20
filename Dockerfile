@@ -17,15 +17,18 @@ LABEL maintainer="thia.mdossantos@gmail.com" \
 RUN apt-get update && \
     apt-get -y install mosquitto-clients
 
-COPY docker-entrypoint.sh main.sh /
+COPY docker-entrypoint.sh /
 
 RUN chmod 0755 /docker-entrypoint.sh && \
     groupadd mqtt && \
     useradd -g mqtt -d /mqtt -m -s /bin/false mqtt && \
+    chown -R mqtt:mqtt /mqtt && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-WORKDIR "/"
+COPY main.sh /mqtt
+
+WORKDIR "/mqtt"
 USER "mqtt"
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["./main.sh"]
