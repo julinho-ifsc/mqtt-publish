@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function publish() {
-	mosquitto_pub -h mqtt.sj.ifsc.edu.br -m $1 -t "julinho/$2" -d
+	mosquitto_pub -h $BROKER -m $1 -t "julinho/$2" -d
 	sleep 1
 }
 
